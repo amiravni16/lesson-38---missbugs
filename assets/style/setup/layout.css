@@ -16,3 +16,13 @@
 .main-content > .full-width {
     grid-column: 1 / -1;
 }
+
+.app-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.app-wrapper main {
+    flex-grow: 1;
+}
