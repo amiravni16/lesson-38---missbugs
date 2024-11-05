@@ -55,13 +55,15 @@ export function BugIndex() {
             .catch(err => showErrorMsg('Cannot update bug', err))
     }
 
-    return <main>
-        <section className='info-actions'>
-            <h3>Bugs App</h3>
-            <button onClick={onAddBug}>Add Bug ⛐</button>
-        </section>
-        <main>
-            <BugList bugs={bugs} onRemoveBug={onRemoveBug} onEditBug={onEditBug} />
-        </main>
-    </main>
+    return <section className="bug-index main-content">
+        <header>
+            <h3>Bug List</h3>
+            <button onClick={onAddBug}>Add Bug</button>
+        </header>
+        
+        <BugList 
+            bugs={bugs} 
+            onRemoveBug={onRemoveBug} 
+            onEditBug={onEditBug} />
+    </section>
 }

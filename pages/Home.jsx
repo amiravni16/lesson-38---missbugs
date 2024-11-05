@@ -1,6 +1,6 @@
 export function Home() {
-    return <section>
-        <h2>Home is Home</h2>
-        <img src="assets/img/logo.png" />
+    return <section className="home-page main-content">
+        <h2>Welcome Home</h2>
+        <img src="assets/img/miss-bug.png" />
     </section>
 }

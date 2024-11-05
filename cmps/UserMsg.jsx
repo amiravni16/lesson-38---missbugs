@@ -13,14 +13,14 @@ export function UserMsg() {
 		})
 		return unsubscribe
 	}, [])
-
+    
 	function closeMsg() {
 		setMsg(null)
 	}
 
 	if (!msg) return <div></div>
 	return <section className={`user-msg ${msg.type}`}>
-        <button onClick={closeMsg}>x</button>
         <span>{msg.txt}</span>
+        <button onClick={closeMsg}>x</button>
     </section>
 }

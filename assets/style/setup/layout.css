@@ -1,0 +1,18 @@
+.main-content, .main-content > .full-width {
+    --min-padding: 2rem;
+    --max-width: 900px;
+
+    display: grid;
+    grid-template-columns: 
+        minmax(var(--min-padding), 1fr) 
+        minmax(auto, var(--max-width))
+        minmax(var(--min-padding), 1fr);
+}
+
+.main-content > * {
+    grid-column: 2;
+}
+
+.main-content > .full-width {
+    grid-column: 1 / -1;
+}

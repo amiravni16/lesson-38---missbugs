@@ -1,5 +1,7 @@
 export function AppFooter () {
-    return <footer>
-        <p>coffeerights to all</p>
+    const year = (new Date).getFullYear()
+
+    return <footer className="main-content">
+        <p>coffeerights &copy; {year}</p>
     </footer>
 }

@@ -1,6 +1,7 @@
 const Router = ReactRouterDOM.HashRouter
 const { Route, Routes } = ReactRouterDOM
 
+import { UserMsg } from './cmps/UserMsg.jsx'
 import { AppHeader } from './cmps/AppHeader.jsx'
 import { AppFooter } from './cmps/AppFooter.jsx'
 import { Home } from './pages/Home.jsx'
@@ -10,8 +11,10 @@ import { AboutUs } from './pages/AboutUs.jsx'
 
 export function App() {
     return (
+
         <Router>
             <div className='main-app'>
+                <UserMsg />
                 <AppHeader />
                 <main className='container'>
                     <Routes>

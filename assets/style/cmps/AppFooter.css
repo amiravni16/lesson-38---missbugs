@@ -1,0 +1,8 @@
+footer {
+    padding: 5px;
+    background-color: lightsteelblue;
+    margin: 10px 0 0;
+
+    justify-items: center;
+    padding-block: 1em;
+}

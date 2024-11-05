@@ -1,6 +1,6 @@
 export function BugPreview({bug}) {
-    return <article>
-        <h4>{bug.title}</h4>
+    return <article className="bug-preview">
+        <p className="title">{bug.title}</p>
         <p>Severity: <span>{bug.severity}</span></p>
     </article>
 }
