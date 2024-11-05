@@ -31,14 +31,13 @@ export function BugIndex() {
             title: prompt('Bug title?'),
             severity: +prompt('Bug severity?'),
         }
+
         bugService.save(bug)
             .then(savedBug => {
                 setBugs([...bugs, savedBug])
                 showSuccessMsg('Bug added')
             })
-            .catch(err => {
-                showErrorMsg(`Cannot add bug`, err)
-            })
+            .catch(err => showErrorMsg(`Cannot add bug`, err))
     }
 
     function onEditBug(bug) {
