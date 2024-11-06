@@ -2,7 +2,7 @@ const { useState, useEffect, useRef } = React
 import { eventBusService } from '../services/event-bus.service.js'
 
 export function UserMsg() {
-	const [msg, setMsg] = useState(null)
+	const [msg, setMsg] = useState()
 	const timeoutIdRef = useRef()
 
 	useEffect(() => {

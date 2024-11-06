@@ -11,10 +11,10 @@ import { AboutUs } from './pages/AboutUs.jsx'
 
 export function App() {
     return <Router>
-        <div className='app-wrapper'>
+        <div className="app-wrapper">
             <UserMsg />
             <AppHeader />
-            <main className='container'>
+            <main className="container">
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/bug" element={<BugIndex />} />

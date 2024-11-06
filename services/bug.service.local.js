@@ -10,10 +10,24 @@ export const bugService = {
     getById,
     save,
     remove,
+    getDefaultFilter
 }
 
-function query() {
+function query(filterBy) {
     return storageService.query(STORAGE_KEY)
+    .then(bugs => {
+
+        if (filterBy.txt) {
+            const regExp = new RegExp(filterBy.txt, 'i')
+            bugs = bugs.filter(bug => regExp.test(bug.title))
+        }
+
+        if (filterBy.minSeverity) {
+            bugs = bugs.filter(bug => bug.severity >= filterBy.minSeverity)
+        }
+
+        return bugs
+    })
 }
 
 function getById(bugId) {
@@ -59,4 +73,8 @@ function _createBugs() {
         }
     ]
     utilService.saveToStorage(STORAGE_KEY, bugs)
+}
+
+function getDefaultFilter() {
+    return { txt: '', minSeverity: 0 }
 }

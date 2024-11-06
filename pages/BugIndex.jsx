@@ -3,15 +3,17 @@ const { useState, useEffect } = React
 import { bugService } from '../services/bug.service.local.js'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 
+import { BugFilter } from '../cmps/BugFilter.jsx'
 import { BugList } from '../cmps/BugList.jsx'
 
 export function BugIndex() {
     const [bugs, setBugs] = useState(null)
+    const [filterBy, setFilterBy] = useState(bugService.getDefaultFilter())
 
-    useEffect(loadBugs, [])
+    useEffect(loadBugs, [filterBy])
 
     function loadBugs() {
-        bugService.query()
+        bugService.query(filterBy)
             .then(setBugs)
             .catch(err => showErrorMsg(`Couldn't load bugs - ${err}`))
     }
@@ -28,8 +30,8 @@ export function BugIndex() {
 
     function onAddBug() {
         const bug = {
-            title: prompt('Bug title?'),
-            severity: +prompt('Bug severity?'),
+            title: prompt('Bug title?', 'Bug ' + Date.now()),
+            severity: +prompt('Bug severity?', 3)
         }
 
         bugService.save(bug)
@@ -41,7 +43,7 @@ export function BugIndex() {
     }
 
     function onEditBug(bug) {
-        const severity = +prompt('New severity?')
+        const severity = +prompt('New severity?', bug.severity)
         const bugToSave = { ...bug, severity }
 
         bugService.save(bugToSave)
@@ -55,7 +57,13 @@ export function BugIndex() {
             .catch(err => showErrorMsg('Cannot update bug', err))
     }
 
+    function onSetFilterBy(filterBy) {
+        setFilterBy(prevFilter => ({ ...prevFilter, ...filterBy }))
+    }
+
     return <section className="bug-index main-content">
+        
+        <BugFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
         <header>
             <h3>Bug List</h3>
             <button onClick={onAddBug}>Add Bug</button>

@@ -26,3 +26,7 @@
 .app-wrapper main {
     flex-grow: 1;
 }
+
+.container {
+    padding: 1em;
+}

@@ -1,8 +1,7 @@
 footer {
-    padding-block: 5px;
-    background-color: lightsteelblue;
-    margin: 10px 0 0;
-
-    justify-items: start;
-    padding-block: 1em;
+    margin: 1em 0 0;
+    padding: 1em;
+    text-align: center;
+    background-color: var(--gray1);
+    color: whitesmoke;
 }

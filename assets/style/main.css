@@ -1,17 +1,17 @@
 @import './setup/reset.css';
+@import './setup/vars.css';
+@import './setup/base.css';
 @import './setup/layout.css';
 
-@import './pages/Home.css';
-@import './pages/BugIndex.css';
-@import './pages/AboutUs.css';
+@import './cmps/Home.css';
+@import './cmps/AboutUs.css';
+@import './cmps/BugIndex.css';
+@import './cmps/BugDetails.css';
 
 @import './cmps/AppHeader.css';
-@import './cmps/BugList.css';
-@import './cmps/BugPreview.css';
-@import './cmps/UserMsg.css';
 @import './cmps/AppFooter.css';
+@import './cmps/UserMsg.css';
 
-body {
-    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
-}
-
+@import './cmps/BugList.css';
+@import './cmps/BugFilter.css';
+@import './cmps/BugPreview.css';

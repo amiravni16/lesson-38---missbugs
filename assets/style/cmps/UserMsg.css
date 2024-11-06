@@ -6,29 +6,23 @@
     display: flex;
     align-items: center;
     gap: 1em;
-
     padding: 10px;
-    background-color: grey;
     border-radius: .5em;
-
-    color: white;
+    
     font-size: .9em;
+    background-color: #111;
+    color: white;
 }
 
 .user-msg button {
-    width: 20px;
-    aspect-ratio: 1;
-
-    border: none;
     border-radius: 50%;
-
     line-height: 1.1;
 }
 
 .success {
-    background-color: darkcyan;
+    background-color: var(--success);
 }
 
 .danger {
-    background-color: orangered;
+    background-color: var(--danger);
 }
