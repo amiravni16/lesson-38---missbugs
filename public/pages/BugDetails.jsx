@@ -23,7 +23,8 @@ export function BugDetails() {
             <div>
                 <h4>{bug.title}</h4>
                 <h5>Severity: <span>{bug.severity}</span></h5>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam esse facilis vitae numquam architecto mollitia fugiat culpa minima aperiam amet sapiente, voluptate sit, in nemo ea. Expedita iure tempore explicabo?</p>
+                <p><strong>Description:</strong></p>
+                <p>{bug.description}</p>
             </div>
         }
         <hr />
