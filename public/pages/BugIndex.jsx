@@ -61,12 +61,47 @@ export function BugIndex() {
         setFilterBy(prevFilter => ({ ...prevFilter, ...filterBy }))
     }
 
+    function downloadPDF() {
+        if (!bugs || bugs.length === 0) {
+            showErrorMsg('No bugs to download')
+            return
+        }
+
+        // Create PDF content
+        let pdfContent = 'Bug Report\n\n'
+        pdfContent += `Generated on: ${new Date().toLocaleString()}\n`
+        pdfContent += `Total bugs: ${bugs.length}\n\n`
+        
+        bugs.forEach((bug, index) => {
+            pdfContent += `${index + 1}. ${bug.title}\n`
+            pdfContent += `   Severity: ${bug.severity}\n`
+            pdfContent += `   Description: ${bug.description || 'No description'}\n`
+            pdfContent += `   ID: ${bug._id}\n\n`
+        })
+
+        // Create and download the file
+        const blob = new Blob([pdfContent], { type: 'text/plain' })
+        const url = window.URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = `bug-report-${new Date().toISOString().split('T')[0]}.txt`
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a)
+        window.URL.revokeObjectURL(url)
+        
+        showSuccessMsg('Bug report downloaded!')
+    }
+
     return <section className="bug-index main-content">
         
         <BugFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
         <header>
-            <h3>Bug List</h3>
-            <button onClick={onAddBug}>Add Bug</button>
+            <h3>Bug List {bugs && `(${bugs.length} bugs)`}</h3>
+            <div className="header-buttons">
+                <button onClick={onAddBug}>Add Bug</button>
+                <button onClick={downloadPDF} className="download-btn">Download Report</button>
+            </div>
         </header>
         
         <BugList 

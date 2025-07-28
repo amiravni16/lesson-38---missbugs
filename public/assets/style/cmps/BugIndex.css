@@ -6,3 +6,23 @@
     padding-block: 1em;
     border-block-end: 1px solid lightgray;
 }
+
+.bug-index .header-buttons {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+}
+
+.bug-index .download-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 0.5em 1em;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.bug-index .download-btn:hover {
+    background-color: #218838;
+}
