@@ -1,28 +1,89 @@
+.bug-index {
+    padding: 1em;
+}
+
 .bug-index header {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-
-    padding-block: 1em;
-    border-block-end: 1px solid lightgray;
-}
-
-.bug-index .header-buttons {
-    display: flex;
-    gap: 1em;
     align-items: center;
+    margin-bottom: 1em;
+    padding: 1em;
+    background: var(--gray2);
+    border-radius: 8px;
 }
 
-.bug-index .download-btn {
-    background-color: #28a745;
-    color: white;
+.bug-index h3 {
+    margin: 0;
+    color: var(--gray1);
+}
+
+.header-buttons {
+    display: flex;
+    gap: 0.8em;
+}
+
+.header-buttons button {
+    padding: 0.7em 1.2em;
     border: none;
-    padding: 0.5em 1em;
     border-radius: 4px;
     cursor: pointer;
     font-weight: 500;
+    transition: all 0.2s;
 }
 
-.bug-index .download-btn:hover {
-    background-color: #218838;
+.header-buttons button:first-child {
+    background: var(--clr1);
+    color: white;
+}
+
+.header-buttons button:first-child:hover {
+    background: var(--clr2);
+}
+
+.download-btn {
+    background: var(--gray3) !important;
+    color: white !important;
+}
+
+.download-btn:hover {
+    background: var(--gray1) !important;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    margin-top: 2em;
+    padding: 1em;
+    background: var(--gray2);
+    border-radius: 8px;
+}
+
+.pagination button {
+    padding: 0.6em 1.2em;
+    border: 1px solid var(--gray3);
+    background: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.pagination button:hover:not(:disabled) {
+    background: var(--clr1);
+    color: white;
+    border-color: var(--clr1);
+}
+
+.pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.page-info {
+    font-weight: 500;
+    color: var(--gray1);
+    min-width: 120px;
+    text-align: center;
 }

@@ -1,15 +1,54 @@
 .bug-preview {
-    display: flex;
-    flex-direction: column;
-    gap: .6em;
+    background-color: var(--gray2);
+    padding: 1em;
+    border-radius: 8px;
+    margin-bottom: 1em;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.bug-preview:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .bug-preview .title {
     font-weight: bold;
-    font-size: 1.1em;
+    margin-bottom: 0.5em;
+    color: var(--gray1);
 }
 
-.bug-preview span {
-    margin-inline-start: .5em;
-    font-size: .9em;
+.bug-preview .description {
+    color: var(--gray3);
+    margin-bottom: 0.8em;
+    line-height: 1.4;
+    font-size: 0.9em;
+}
+
+.bug-preview .severity-1 { color: #28a745; }
+.bug-preview .severity-2 { color: #ffc107; }
+.bug-preview .severity-3 { color: #fd7e14; }
+.bug-preview .severity-4 { color: #dc3545; }
+.bug-preview .severity-5 { color: #6f42c1; }
+
+.bug-preview .labels {
+    display: flex;
+    gap: 0.5em;
+    margin: 0.8em 0;
+    flex-wrap: wrap;
+}
+
+.bug-preview .label {
+    background: var(--clr1);
+    color: white;
+    padding: 0.2em 0.6em;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: 500;
+}
+
+.bug-preview .date {
+    color: var(--gray3);
+    font-size: 0.8em;
+    margin-top: 0.8em;
+    font-style: italic;
 }
