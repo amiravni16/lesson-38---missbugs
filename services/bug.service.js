@@ -12,8 +12,59 @@ export const bugService = {
 
 const bugs = utilService.readJsonFile('data/bug.json')
 
-function query() {
-    return Promise.resolve(bugs)
+function query(filterBy = {}, sortBy = {}, page = {}) {
+    let filteredBugs = [...bugs]
+    
+    // Filtering
+    if (filterBy.title) {
+        const regex = new RegExp(filterBy.title, 'i')
+        filteredBugs = filteredBugs.filter(bug => regex.test(bug.title))
+    }
+    
+    if (filterBy.minSeverity) {
+        filteredBugs = filteredBugs.filter(bug => bug.severity >= filterBy.minSeverity)
+    }
+    
+    if (filterBy.labels && filterBy.labels.length > 0) {
+        filteredBugs = filteredBugs.filter(bug => 
+            filterBy.labels.some(label => bug.labels.includes(label))
+        )
+    }
+    
+    // Sorting
+    if (sortBy.field) {
+        filteredBugs.sort((a, b) => {
+            let aVal = a[sortBy.field]
+            let bVal = b[sortBy.field]
+            
+            if (sortBy.field === 'createdAt') {
+                aVal = new Date(aVal).getTime()
+                bVal = new Date(bVal).getTime()
+            }
+            
+            if (sortBy.direction === 'desc') {
+                return bVal - aVal
+            }
+            return aVal - bVal
+        })
+    }
+    
+    // Paging
+    const totalCount = filteredBugs.length
+    const pageSize = page.size || 10
+    const pageIdx = page.idx || 0
+    const startIdx = pageIdx * pageSize
+    const endIdx = startIdx + pageSize
+    
+    const pagedBugs = filteredBugs.slice(startIdx, endIdx)
+    
+    return Promise.resolve({
+        bugs: pagedBugs,
+        totalCount,
+        pageSize,
+        pageIdx,
+        totalPages: Math.ceil(totalCount / pageSize)
+    })
 }
 
 function getById(bugId) {
@@ -36,6 +87,7 @@ function save(bug) {
     } else {
         bug._id = utilService.makeId()
         bug.createdAt = Date.now()
+        bug.labels = bug.labels || []
         bugs.unshift(bug)
     }
     return _saveBugsToFile().then(() => bug)

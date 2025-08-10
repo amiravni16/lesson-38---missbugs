@@ -4,27 +4,31 @@
     "title": "Infinite Loop Detected",
     "description": "The application enters an infinite loop when processing large datasets, causing the browser to freeze and become unresponsive. This occurs specifically in the data processing module when handling arrays with more than 1000 items.",
     "severity": 4,
-    "createdAt": 1542107359454
+    "createdAt": 1542107359454,
+    "labels": ["critical", "performance", "data-processing"]
   },
   {
     "_id": "K3YB0RD",
     "title": "Keyboard Not Found",
     "description": "Users are unable to input text in the search field. The keyboard events are not being captured properly, making it impossible to type or search for content. This affects all text input fields across the application.",
     "severity": 3,
-    "createdAt": 1542107359455
+    "createdAt": 1542107359455,
+    "labels": ["ui", "input", "user-experience"]
   },
   {
     "_id": "C0FF33",
     "title": "404 Coffee Not Found",
     "description": "The coffee machine API is returning 404 errors when trying to brew coffee. The endpoint seems to be down or the coffee beans are missing. This is affecting the developer productivity significantly.",
     "severity": 2,
-    "createdAt": 1542107359456
+    "createdAt": 1542107359456,
+    "labels": ["api", "dev-branch", "need-CR"]
   },
   {
     "_id": "G0053",
     "title": "Unexpected Response",
     "description": "The API is returning unexpected JSON responses that don't match the expected schema. This causes parsing errors in the frontend and breaks the user interface functionality.",
     "severity": 1,
-    "createdAt": 1542107359457
+    "createdAt": 1542107359457,
+    "labels": ["api", "critical", "dev-branch"]
   }
 ] 
