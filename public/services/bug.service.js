@@ -3,7 +3,7 @@ import { storageService } from './async-storage.service.js'
 
 const STORAGE_KEY = 'bugs'
 
-_createBugs()
+const BASE_URL = 'http://localhost:3030/api/bug'
 
 export const bugService = {
     query,
@@ -13,72 +13,66 @@ export const bugService = {
     getDefaultFilter
 }
 
-function query(filterBy) {
-    return storageService.query(STORAGE_KEY)
-    .then(bugs => {
-
-        if (filterBy.txt) {
-            const regExp = new RegExp(filterBy.txt, 'i')
-            bugs = bugs.filter(bug => regExp.test(bug.title))
-        }
-
-        if (filterBy.minSeverity) {
-            bugs = bugs.filter(bug => bug.severity >= filterBy.minSeverity)
-        }
-
-        return bugs
-    })
+function query(filterBy = {}, sortBy = {}, page = {}) {
+    const queryParams = new URLSearchParams()
+    
+    // Add filter parameters
+    if (filterBy.txt) queryParams.append('title', filterBy.txt)
+    if (filterBy.minSeverity) queryParams.append('minSeverity', filterBy.minSeverity)
+    if (filterBy.labels && filterBy.labels.length > 0) {
+        queryParams.append('labels', filterBy.labels.join(','))
+    }
+    
+    // Add sort parameters
+    if (sortBy.field) queryParams.append('sortBy', sortBy.field)
+    if (sortBy.direction) queryParams.append('sortDir', sortBy.direction === 'desc' ? '-1' : '1')
+    
+    // Add page parameters
+    if (page.idx !== undefined) queryParams.append('pageIdx', page.idx)
+    if (page.size) queryParams.append('pageSize', page.size)
+    
+    const url = `${BASE_URL}?${queryParams.toString()}`
+    
+    return fetch(url)
+        .then(res => {
+            if (!res.ok) throw new Error('Failed to fetch bugs')
+            return res.json()
+        })
 }
 
 function getById(bugId) {
-    return storageService.get(STORAGE_KEY, bugId)
+    return fetch(`${BASE_URL}/${bugId}`)
+        .then(res => {
+            if (!res.ok) throw new Error('Bug not found')
+            return res.json()
+        })
 }
 
 function remove(bugId) {
-    return storageService.remove(STORAGE_KEY, bugId)
+    return fetch(`${BASE_URL}/${bugId}`, {
+        method: 'DELETE'
+    }).then(res => {
+        if (!res.ok) throw new Error('Failed to remove bug')
+        return res.text()
+    })
 }
 
 function save(bug) {
-    if (bug._id) {
-        return storageService.put(STORAGE_KEY, bug)
-    } else {
-        return storageService.post(STORAGE_KEY, bug)
-    }
-}
-
-function _createBugs() {
-    let bugs = utilService.loadFromStorage(STORAGE_KEY)
-    if (bugs && bugs.length > 0) return 
-
-    bugs = [
-        {
-            title: "Infinite Loop Detected",
-            description: "The application enters an infinite loop when processing large datasets, causing the browser to freeze and become unresponsive. This occurs specifically in the data processing module when handling arrays with more than 1000 items.",
-            severity: 4,
-            _id: "1NF1N1T3"
+    const method = bug._id ? 'PUT' : 'POST'
+    const url = bug._id ? `${BASE_URL}/${bug._id}` : BASE_URL
+    
+    return fetch(url, {
+        method,
+        headers: {
+            'Content-Type': 'application/json'
         },
-        {
-            title: "Keyboard Not Found",
-            description: "Users are unable to input text in the search field. The keyboard events are not being captured properly, making it impossible to type or search for content. This affects all text input fields across the application.",
-            severity: 3,
-            _id: "K3YB0RD"
-        },
-        {
-            title: "404 Coffee Not Found",
-            description: "The coffee machine API is returning 404 errors when trying to brew coffee. The endpoint seems to be down or the coffee beans are missing. This is affecting the developer productivity significantly.",
-            severity: 2,
-            _id: "C0FF33"
-        },
-        {
-            title: "Unexpected Response",
-            description: "The API is returning unexpected JSON responses that don't match the expected schema. This causes parsing errors in the frontend and breaks the user interface functionality.",
-            severity: 1,
-            _id: "G0053"
-        }
-    ]
-    utilService.saveToStorage(STORAGE_KEY, bugs)
+        body: JSON.stringify(bug)
+    }).then(res => {
+        if (!res.ok) throw new Error('Failed to save bug')
+        return res.json()
+    })
 }
 
 function getDefaultFilter() {
-    return { txt: '', minSeverity: 0 }
+    return { txt: '', minSeverity: 0, labels: [] }
 }
