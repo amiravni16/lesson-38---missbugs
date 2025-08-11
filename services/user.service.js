@@ -1,13 +1,13 @@
-const fs = require('fs')
-const utilService = require('./util.service.js')
-const loggerService = require('./logger.service.js')
+import fs from 'fs'
+import { utilService } from './util.service.js'
+import { loggerService } from './logger.service.js'
 
-module.exports = {
+export {
+    signup,
     query,
-    getById,
-    save,
     remove,
-    getDefaultUser
+    getById,
+    getByUsername
 }
 
 const users = utilService.readJsonFile('data/user.json')
@@ -48,21 +48,30 @@ function getById(userId) {
     return Promise.resolve(user)
 }
 
-function save(user) {
-    if (user._id) {
-        // Update existing user
-        const idx = users.findIndex(currUser => currUser._id === user._id)
-        if (idx === -1) return Promise.reject('User not found!')
-        
-        users[idx] = { ...users[idx], ...user }
-    } else {
-        // Create new user
-        user._id = utilService.makeId()
-        user.createdAt = Date.now()
-        users.unshift(user)
+function getByUsername(username) {
+    const user = users.find(user => user.username === username)
+    return Promise.resolve(user)
+}
+
+function signup({ fullname, username, password }) {
+    if (!fullname || !username || !password) {
+        return Promise.reject('Incomplete credentials')
     }
     
-    return _saveUsersToFile().then(() => user)
+    const user = {
+        _id: utilService.makeId(),
+        fullname,
+        username,
+        password,
+        isAdmin: false,
+    }
+    users.push(user)
+
+    return _saveUsersToFile().then(() => ({
+        _id: user._id,
+        fullname: user.fullname,
+        isAdmin: user.isAdmin,
+    }))
 }
 
 function remove(userId) {
@@ -73,10 +82,7 @@ function remove(userId) {
     return _saveUsersToFile()
 }
 
-function getDefaultUser() {
-    // Return the first user as default for new bugs
-    return users[0] || null
-}
+
 
 function _saveUsersToFile() {
     return new Promise((resolve, reject) => {

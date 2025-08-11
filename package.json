@@ -23,6 +23,7 @@
   "type": "module",
   "dependencies": {
     "cookie-parser": "^1.4.7",
+    "cryptr": "^6.3.0",
     "express": "^5.1.0",
     "follow-redirects": "^1.15.9"
   }

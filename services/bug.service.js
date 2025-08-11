@@ -11,7 +11,6 @@ export const bugService = {
 }
 
 const bugs = utilService.readJsonFile('data/bug.json')
-const userService = require('./user.service.js')
 
 function query(filterBy = {}, sortBy = {}, page = {}) {
     let filteredBugs = [...bugs]
@@ -100,31 +99,42 @@ function getById(bugId) {
     return Promise.resolve(bug)
 }
 
-function remove(bugId) {
+function remove(bugId, loggedinUser) {
+    const bug = bugs.find(bug => bug._id === bugId)
+    if (!bug) return Promise.reject('Bug not found!')
+    
+    // Check ownership
+    if (bug.creator && bug.creator._id !== loggedinUser._id) {
+        return Promise.reject('Only the bug creator can remove this bug')
+    }
+    
     const idx = bugs.findIndex(bug => bug._id === bugId)
     bugs.splice(idx, 1)
     return _saveBugsToFile()
 }
 
-function save(bug) {
+function save(bug, loggedinUser) {
     console.log('bug: ', bug)
     if (bug._id) {
+        // Update existing bug - check ownership
+        const existingBug = bugs.find(currBug => currBug._id === bug._id)
+        if (!existingBug) return Promise.reject('Bug not found!')
+        
+        if (existingBug.creator && existingBug.creator._id !== loggedinUser._id) {
+            return Promise.reject('Only the bug creator can update this bug')
+        }
+        
         const idx = bugs.findIndex(currBug => currBug._id === bug._id)
         bugs[idx] = { ...bugs[idx], ...bug }
     } else {
+        // Create new bug
         bug._id = utilService.makeId()
         bug.createdAt = Date.now()
         bug.labels = bug.labels || []
         
-        // Set default creator if not provided
+        // Creator should already be set from the route
         if (!bug.creator) {
-            const defaultUser = userService.getDefaultUser()
-            if (defaultUser) {
-                bug.creator = {
-                    _id: defaultUser._id,
-                    fullname: defaultUser.fullname
-                }
-            }
+            return Promise.reject('Creator information is required')
         }
         
         bugs.unshift(bug)
