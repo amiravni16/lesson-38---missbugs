@@ -9,7 +9,11 @@
       "critical",
       "performance",
       "data-processing"
-    ]
+    ],
+    "creator": {
+      "_id": "u101",
+      "fullname": "Puki Ja"
+    }
   },
   {
     "_id": "K3YB0RD",
@@ -21,7 +25,11 @@
       "ui",
       "input",
       "user-experience"
-    ]
+    ],
+    "creator": {
+      "_id": "u102",
+      "fullname": "Muki Da"
+    }
   },
   {
     "_id": "C0FF33",
@@ -33,7 +41,11 @@
       "api",
       "dev-branch",
       "need-CR"
-    ]
+    ],
+    "creator": {
+      "_id": "u103",
+      "fullname": "Suki La"
+    }
   },
   {
     "_id": "G0053",
@@ -45,6 +57,10 @@
       "api",
       "critical",
       "dev-branch"
-    ]
+    ],
+    "creator": {
+      "_id": "u104",
+      "fullname": "Tuki Ma"
+    }
   }
 ]

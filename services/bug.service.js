@@ -11,6 +11,7 @@ export const bugService = {
 }
 
 const bugs = utilService.readJsonFile('data/bug.json')
+const userService = require('./user.service.js')
 
 function query(filterBy = {}, sortBy = {}, page = {}) {
     let filteredBugs = [...bugs]
@@ -51,6 +52,10 @@ function query(filterBy = {}, sortBy = {}, page = {}) {
     
     if (filterBy.hasLabels) {
         filteredBugs = filteredBugs.filter(bug => bug.labels && bug.labels.length > 0)
+    }
+    
+    if (filterBy.creatorId) {
+        filteredBugs = filteredBugs.filter(bug => bug.creator && bug.creator._id === filterBy.creatorId)
     }
     
     // Sorting
@@ -110,6 +115,18 @@ function save(bug) {
         bug._id = utilService.makeId()
         bug.createdAt = Date.now()
         bug.labels = bug.labels || []
+        
+        // Set default creator if not provided
+        if (!bug.creator) {
+            const defaultUser = userService.getDefaultUser()
+            if (defaultUser) {
+                bug.creator = {
+                    _id: defaultUser._id,
+                    fullname: defaultUser.fullname
+                }
+            }
+        }
+        
         bugs.unshift(bug)
     }
     return _saveBugsToFile().then(() => bug)
