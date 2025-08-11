@@ -31,12 +31,36 @@ function query(filterBy = {}, sortBy = {}, page = {}) {
     if (page.idx !== undefined) queryParams.append('pageIdx', page.idx)
     if (page.size) queryParams.append('pageSize', page.size)
     
-    const url = `${BASE_URL}?${queryParams.toString()}`
+    // Only add query string if there are parameters
+    const hasParams = queryParams.toString().length > 0
+    const url = hasParams ? `${BASE_URL}?${queryParams.toString()}` : BASE_URL
     
-    return fetch(url)
+    console.log('Fetching bugs from:', url) // Debug log
+    console.log('Request details:', { filterBy, sortBy, page }) // Debug log
+    
+    return fetch(url, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    })
         .then(res => {
-            if (!res.ok) throw new Error('Failed to fetch bugs')
+            console.log('Response status:', res.status) // Debug log
+            console.log('Response headers:', res.headers) // Debug log
+            if (!res.ok) {
+                console.error('Response not ok:', res.status, res.statusText) // Debug log
+                throw new Error(`HTTP ${res.status}: ${res.statusText}`)
+            }
             return res.json()
+        })
+        .then(data => {
+            console.log('Response data:', data) // Debug log
+            return data
+        })
+        .catch(err => {
+            console.error('Error fetching bugs:', err) // Debug log
+            throw err
         })
 }
 

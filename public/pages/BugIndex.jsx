@@ -7,17 +7,26 @@ import { BugFilter } from '../cmps/BugFilter.jsx'
 import { BugList } from '../cmps/BugList.jsx'
 
 export function BugIndex() {
+    console.log('BugIndex component mounted') // Debug log
+    
     const [bugs, setBugs] = useState(null)
     const [filterBy, setFilterBy] = useState(bugService.getDefaultFilter())
     const [sortBy, setSortBy] = useState({ field: '', direction: 'asc' })
     const [page, setPage] = useState({ idx: 0, size: 10 })
     const [paginationInfo, setPaginationInfo] = useState(null)
+    const [isLoading, setIsLoading] = useState(true)
 
-    useEffect(loadBugs, [filterBy, sortBy, page])
+    useEffect(() => {
+        console.log('useEffect triggered with:', { filterBy, sortBy, page }) // Debug log
+        setIsLoading(true)
+        loadBugs()
+    }, [filterBy.txt, filterBy.minSeverity, filterBy.labels, sortBy.field, sortBy.direction, page.idx, page.size])
 
     function loadBugs() {
+        console.log('Loading bugs with:', { filterBy, sortBy, page }) // Debug log
         bugService.query(filterBy, sortBy, page)
             .then(result => {
+                console.log('Bugs loaded successfully:', result) // Debug log
                 setBugs(result.bugs)
                 setPaginationInfo({
                     totalCount: result.totalCount,
@@ -25,8 +34,13 @@ export function BugIndex() {
                     pageIdx: result.pageIdx,
                     totalPages: result.totalPages
                 })
+                setIsLoading(false)
             })
-            .catch(err => showErrorMsg(`Couldn't load bugs - ${err}`))
+            .catch(err => {
+                console.error('Error loading bugs:', err) // Debug log
+                showErrorMsg(`Couldn't load bugs - ${err}`)
+                setIsLoading(false)
+            })
     }
 
     function onRemoveBug(bugId) {
@@ -91,7 +105,7 @@ export function BugIndex() {
         // Create PDF content
         let pdfContent = 'Bug Report\n\n'
         pdfContent += `Generated on: ${new Date().toLocaleString()}\n`
-        pdfContent += `Total bugs: ${paginationInfo?.totalCount || bugs.length}\n\n`
+        pdfContent += `Total bugs: ${paginationInfo && paginationInfo.totalCount || bugs.length}\n\n`
         
         bugs.forEach((bug, index) => {
             pdfContent += `${index + 1}. ${bug.title}\n`
@@ -115,6 +129,8 @@ export function BugIndex() {
         showSuccessMsg('Bug report downloaded!')
     }
 
+    console.log('BugIndex render - bugs:', bugs, 'paginationInfo:', paginationInfo) // Debug log
+    
     return <section className="bug-index main-content">
         
         <BugFilter 
@@ -132,10 +148,16 @@ export function BugIndex() {
             </div>
         </header>
         
-        <BugList 
-            bugs={bugs} 
-            onRemoveBug={onRemoveBug} 
-            onEditBug={onEditBug} />
+        {isLoading ? (
+            <div className="loading">Loading bugs...</div>
+        ) : bugs && bugs.length > 0 ? (
+            <BugList 
+                bugs={bugs} 
+                onRemoveBug={onRemoveBug} 
+                onEditBug={onEditBug} />
+        ) : (
+            <div className="no-bugs">No bugs found</div>
+        )}
             
         {/* Pagination */}
         {paginationInfo && paginationInfo.totalPages > 1 && (

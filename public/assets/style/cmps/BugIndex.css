@@ -87,3 +87,18 @@
     min-width: 120px;
     text-align: center;
 }
+
+.loading {
+    text-align: center;
+    padding: 40px;
+    font-size: 18px;
+    color: #666;
+}
+
+.no-bugs {
+    text-align: center;
+    padding: 40px;
+    font-size: 18px;
+    color: #999;
+    font-style: italic;
+}

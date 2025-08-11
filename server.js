@@ -44,6 +44,42 @@ app.get('/api/bug', (req, res) => {
     })
 })
 
+// Legacy endpoints for backward compatibility (MUST come before /:bugId routes)
+app.get('/api/bug/save', (req, res) => {
+    loggerService.debug('req.query', req.query)
+
+    const { title, description, severity, _id } = req.query
+    console.log('req.query', req.query)
+    const bug = {
+        _id,
+        title,
+        description,
+        severity: +severity,
+        labels: []
+    }
+
+    bugService.save(bug)
+        .then((savedBug) => {
+            res.send(savedBug)
+        })
+        .catch((err) => {
+            loggerService.error('Cannot save bug', err)
+            res.status(400).send('Cannot save bug')
+        })
+})
+
+app.get('/api/bug/:bugId/remove', (req, res) => {
+    const { bugId } = req.params
+
+    bugService.remove(bugId).then(() => {
+        loggerService.info(`Bug ${bugId} removed`)
+        res.send('Removed!')
+    }).catch(err => {
+        loggerService.error('Cannot remove bug', err)
+        res.status(400).send('Cannot remove bug')
+    })
+})
+
 // POST /api/bug - Create new bug
 app.post('/api/bug', (req, res) => {
     const bug = req.body
@@ -113,42 +149,6 @@ app.delete('/api/bug/:bugId', (req, res) => {
     bugService.remove(bugId).then(() => {
         loggerService.info(`Bug ${bugId} removed`)
         res.status(204).send()
-    }).catch(err => {
-        loggerService.error('Cannot remove bug', err)
-        res.status(400).send('Cannot remove bug')
-    })
-})
-
-// Legacy endpoints for backward compatibility
-app.get('/api/bug/save', (req, res) => {
-    loggerService.debug('req.query', req.query)
-
-    const { title, description, severity, _id } = req.query
-    console.log('req.query', req.query)
-    const bug = {
-        _id,
-        title,
-        description,
-        severity: +severity,
-        labels: []
-    }
-
-    bugService.save(bug)
-        .then((savedBug) => {
-            res.send(savedBug)
-        })
-        .catch((err) => {
-            loggerService.error('Cannot save bug', err)
-            res.status(400).send('Cannot save bug')
-        })
-})
-
-app.get('/api/bug/:bugId/remove', (req, res) => {
-    const { bugId } = req.params
-
-    bugService.remove(bugId).then(() => {
-        loggerService.info(`Bug ${bugId} removed`)
-        res.send('Removed!')
     }).catch(err => {
         loggerService.error('Cannot remove bug', err)
         res.status(400).send('Cannot remove bug')
