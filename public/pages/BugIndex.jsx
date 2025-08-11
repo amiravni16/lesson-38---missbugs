@@ -12,7 +12,7 @@ export function BugIndex() {
     const [bugs, setBugs] = useState(null)
     const [filterBy, setFilterBy] = useState(bugService.getDefaultFilter())
     const [sortBy, setSortBy] = useState({ field: '', direction: 'asc' })
-    const [page, setPage] = useState({ idx: 0, size: 10 })
+    const [page, setPage] = useState({ idx: 0, size: 3 })
     const [paginationInfo, setPaginationInfo] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
 
@@ -20,7 +20,7 @@ export function BugIndex() {
         console.log('useEffect triggered with:', { filterBy, sortBy, page }) // Debug log
         setIsLoading(true)
         loadBugs()
-    }, [filterBy.txt, filterBy.minSeverity, filterBy.labels, sortBy.field, sortBy.direction, page.idx, page.size])
+    }, [filterBy.txt, filterBy.minSeverity, filterBy.maxSeverity, filterBy.labels, filterBy.dateFrom, filterBy.dateTo, filterBy.hasLabels, sortBy.field, sortBy.direction, page.idx, page.size])
 
     function loadBugs() {
         console.log('Loading bugs with:', { filterBy, sortBy, page }) // Debug log
@@ -82,14 +82,12 @@ export function BugIndex() {
 
     function onSetFilterBy(filterBy) {
         setFilterBy(prevFilter => ({ ...prevFilter, ...filterBy }))
-        setPage({ idx: 0, size: 10 }) // Reset to first page when filtering
+        setPage({ idx: 0, size: 3 }) // Reset to first page when filtering
     }
 
-    function onSetSortBy(field) {
-        setSortBy(prevSort => ({
-            field,
-            direction: prevSort.field === field && prevSort.direction === 'asc' ? 'desc' : 'asc'
-        }))
+    function onSetSortBy(sortConfig) {
+        setSortBy(sortConfig)
+        setPage({ idx: 0, size: 3 }) // Reset to first page when sorting
     }
 
     function onSetPage(pageIdx) {
@@ -160,25 +158,62 @@ export function BugIndex() {
         )}
             
         {/* Pagination */}
-        {paginationInfo && paginationInfo.totalPages > 1 && (
+        {paginationInfo && (
             <div className="pagination">
-                <button 
-                    disabled={page.idx === 0}
-                    onClick={() => onSetPage(page.idx - 1)}
-                >
-                    Previous
-                </button>
+                <div className="pagination-controls">
+                    <button 
+                        disabled={page.idx === 0}
+                        onClick={() => onSetPage(page.idx - 1)}
+                        className="pagination-btn"
+                    >
+                        ← Previous
+                    </button>
+                    
+                    <div className="page-navigation">
+                        {Array.from({ length: Math.min(5, paginationInfo.totalPages) }, (_, i) => {
+                            let pageNum
+                            if (paginationInfo.totalPages <= 5) {
+                                pageNum = i
+                            } else if (page.idx < 3) {
+                                pageNum = i
+                            } else if (page.idx >= paginationInfo.totalPages - 3) {
+                                pageNum = paginationInfo.totalPages - 5 + i
+                            } else {
+                                pageNum = page.idx - 2 + i
+                            }
+                            
+                            return (
+                                <button
+                                    key={pageNum}
+                                    onClick={() => onSetPage(pageNum)}
+                                    className={`page-btn ${page.idx === pageNum ? 'active' : ''}`}
+                                >
+                                    {pageNum + 1}
+                                </button>
+                            )
+                        })}
+                    </div>
+                    
+                    <button 
+                        disabled={page.idx >= paginationInfo.totalPages - 1}
+                        onClick={() => onSetPage(page.idx + 1)}
+                        className="pagination-btn"
+                    >
+                        Next →
+                    </button>
+                </div>
                 
-                <span className="page-info">
-                    Page {page.idx + 1} of {paginationInfo.totalPages}
-                </span>
-                
-                <button 
-                    disabled={page.idx >= paginationInfo.totalPages - 1}
-                    onClick={() => onSetPage(page.idx + 1)}
-                >
-                    Next
-                </button>
+                <div className="pagination-info">
+                    <span className="page-info">
+                        Page {page.idx + 1} of {paginationInfo.totalPages}
+                    </span>
+                    
+
+                    
+                    <span className="total-info">
+                        Showing {bugs ? bugs.length : 0} of {paginationInfo.totalCount} bugs (3 per page)
+                    </span>
+                </div>
             </div>
         )}
     </section>

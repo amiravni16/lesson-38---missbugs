@@ -18,12 +18,16 @@ app.get('/nono', (req, res) => res.redirect('/'))
 // REST API for bugs
 // GET /api/bug - List bugs with filtering, sorting, and paging
 app.get('/api/bug', (req, res) => {
-    const { title, minSeverity, labels, sortBy, sortDir, pageIdx, pageSize } = req.query
+    const { txt, minSeverity, maxSeverity, labels, dateFrom, dateTo, hasLabels, sortBy, sortDir, pageIdx, pageSize } = req.query
     
     const filterBy = {}
-    if (title) filterBy.title = title
+    if (txt) filterBy.txt = txt
     if (minSeverity) filterBy.minSeverity = parseInt(minSeverity)
-    if (labels) filterBy.labels = labels.split(',')
+    if (maxSeverity) filterBy.maxSeverity = parseInt(maxSeverity)
+    if (labels) filterBy.labels = labels
+    if (dateFrom) filterBy.dateFrom = dateFrom
+    if (dateTo) filterBy.dateTo = dateTo
+    if (hasLabels) filterBy.hasLabels = hasLabels === 'true'
     
     const sortByObj = {}
     if (sortBy) sortByObj.field = sortBy

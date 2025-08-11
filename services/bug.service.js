@@ -16,19 +16,41 @@ function query(filterBy = {}, sortBy = {}, page = {}) {
     let filteredBugs = [...bugs]
     
     // Filtering
-    if (filterBy.title) {
-        const regex = new RegExp(filterBy.title, 'i')
-        filteredBugs = filteredBugs.filter(bug => regex.test(bug.title))
+    if (filterBy.txt) {
+        const regex = new RegExp(filterBy.txt, 'i')
+        filteredBugs = filteredBugs.filter(bug => 
+            regex.test(bug.title) || 
+            (bug.description && regex.test(bug.description))
+        )
     }
     
     if (filterBy.minSeverity) {
         filteredBugs = filteredBugs.filter(bug => bug.severity >= filterBy.minSeverity)
     }
     
+    if (filterBy.maxSeverity) {
+        filteredBugs = filteredBugs.filter(bug => bug.severity <= filterBy.maxSeverity)
+    }
+    
     if (filterBy.labels && filterBy.labels.length > 0) {
+        const labelArray = Array.isArray(filterBy.labels) ? filterBy.labels : filterBy.labels.split(',').map(l => l.trim())
         filteredBugs = filteredBugs.filter(bug => 
-            filterBy.labels.some(label => bug.labels.includes(label))
+            labelArray.some(label => bug.labels && bug.labels.includes(label))
         )
+    }
+    
+    if (filterBy.dateFrom) {
+        const fromDate = new Date(filterBy.dateFrom).getTime()
+        filteredBugs = filteredBugs.filter(bug => bug.createdAt >= fromDate)
+    }
+    
+    if (filterBy.dateTo) {
+        const toDate = new Date(filterBy.dateTo).getTime()
+        filteredBugs = filteredBugs.filter(bug => bug.createdAt <= toDate)
+    }
+    
+    if (filterBy.hasLabels) {
+        filteredBugs = filteredBugs.filter(bug => bug.labels && bug.labels.length > 0)
     }
     
     // Sorting
@@ -51,7 +73,7 @@ function query(filterBy = {}, sortBy = {}, page = {}) {
     
     // Paging
     const totalCount = filteredBugs.length
-    const pageSize = page.size || 10
+    const pageSize = page.size || 3
     const pageIdx = page.idx || 0
     const startIdx = pageIdx * pageSize
     const endIdx = startIdx + pageSize

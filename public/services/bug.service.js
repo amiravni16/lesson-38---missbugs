@@ -17,11 +17,16 @@ function query(filterBy = {}, sortBy = {}, page = {}) {
     const queryParams = new URLSearchParams()
     
     // Add filter parameters
-    if (filterBy.txt) queryParams.append('title', filterBy.txt)
+    if (filterBy.txt) queryParams.append('txt', filterBy.txt)
     if (filterBy.minSeverity) queryParams.append('minSeverity', filterBy.minSeverity)
+    if (filterBy.maxSeverity) queryParams.append('maxSeverity', filterBy.maxSeverity)
     if (filterBy.labels && filterBy.labels.length > 0) {
-        queryParams.append('labels', filterBy.labels.join(','))
+        const labelsStr = Array.isArray(filterBy.labels) ? filterBy.labels.join(',') : filterBy.labels
+        queryParams.append('labels', labelsStr)
     }
+    if (filterBy.dateFrom) queryParams.append('dateFrom', filterBy.dateFrom)
+    if (filterBy.dateTo) queryParams.append('dateTo', filterBy.dateTo)
+    if (filterBy.hasLabels) queryParams.append('hasLabels', filterBy.hasLabels)
     
     // Add sort parameters
     if (sortBy.field) queryParams.append('sortBy', sortBy.field)
@@ -29,7 +34,7 @@ function query(filterBy = {}, sortBy = {}, page = {}) {
     
     // Add page parameters
     if (page.idx !== undefined) queryParams.append('pageIdx', page.idx)
-    if (page.size) queryParams.append('pageSize', page.size)
+    if (page.size !== undefined) queryParams.append('pageSize', page.size)
     
     // Only add query string if there are parameters
     const hasParams = queryParams.toString().length > 0
@@ -98,5 +103,13 @@ function save(bug) {
 }
 
 function getDefaultFilter() {
-    return { txt: '', minSeverity: 0, labels: [] }
+    return { 
+        txt: '', 
+        minSeverity: '', 
+        maxSeverity: '', 
+        labels: '', 
+        dateFrom: '', 
+        dateTo: '', 
+        hasLabels: false 
+    }
 }
