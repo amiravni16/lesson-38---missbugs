@@ -1,0 +1,34 @@
+[
+  {
+    "_id": "u101",
+    "fullname": "Puki Ja",
+    "username": "puki",
+    "email": "puki@example.com",
+    "imgUrl": "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5362003_1280.png",
+    "createdAt": 1542107359454
+  },
+  {
+    "_id": "u102", 
+    "fullname": "Muki Da",
+    "username": "muki",
+    "email": "muki@example.com",
+    "imgUrl": "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5362003_1280.png",
+    "createdAt": 1542107359455
+  },
+  {
+    "_id": "u103",
+    "fullname": "Suki La",
+    "username": "suki", 
+    "email": "suki@example.com",
+    "imgUrl": "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5362003_1280.png",
+    "createdAt": 1542107359456
+  },
+  {
+    "_id": "u104",
+    "fullname": "Tuki Ma",
+    "username": "tuki",
+    "email": "tuki@example.com", 
+    "imgUrl": "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5362003_1280.png",
+    "createdAt": 1542107359457
+  }
+] 
