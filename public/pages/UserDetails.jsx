@@ -6,6 +6,14 @@ export function UserDetails() {
     const user = userService.getLoggedinUser();
     const userBugs = []; // Fetch or filter bugs created by the user
 
+    if (!user) {
+        return (
+            <section className="user-details">
+                <h2>Please log in to view your profile</h2>
+            </section>
+        );
+    }
+
     return (
         <section className="user-details">
             <h2>{user.username}'s Profile</h2>
