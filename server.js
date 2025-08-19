@@ -56,7 +56,7 @@ app.get('/api/bug/save', (req, res) => {
     loggerService.debug('req.query', req.query)
 
     const { title, description, severity, _id } = req.query
-    console.log('req.query', req.query)
+    
     const bug = {
         _id,
         title,
@@ -135,7 +135,7 @@ app.get('/api/bug/:bugId', (req, res) => {
         visitedBugs.push(bugId)
         
         // Log visited bugs to console
-        console.log('User visited at the following bugs:', visitedBugs)
+
         
         // Set cookie with 7 seconds expiration
         res.cookie('visitedBugs', JSON.stringify(visitedBugs), {
@@ -169,7 +169,7 @@ app.delete('/api/bug/:bugId', (req, res) => {
 // POST /api/auth/signup - Register new user
 app.post('/api/auth/signup', (req, res) => {
     const credentials = req.body
-    console.log('🚀 ~ req.body:', req.body)
+
 
     signup(credentials)
         .then(user => {
@@ -276,7 +276,7 @@ app.delete('/api/user/:userId', (req, res) => {
 })
 
 // Listen will always be the last line in our server!
-const port = 3030
+const port = process.env.PORT || 3030
 app.listen(port, () =>
-    loggerService.info(`Server listening on port http://127.0.0.1:${port}/`)
+    loggerService.info(`Server listening on port ${port}`)
 )
