@@ -1,8 +1,8 @@
-const { useState, useEffect } = React
-const { Link, useParams } = ReactRouterDOM
-
 import { bugService } from '../services/bug.service.js'
 import { showErrorMsg } from '../services/event-bus.service.js'
+
+const { useState, useEffect } = React
+const { Link, useParams } = ReactRouterDOM
 
 export function BugDetails() {
 

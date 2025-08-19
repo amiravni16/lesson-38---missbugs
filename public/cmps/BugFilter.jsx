@@ -1,6 +1,5 @@
-const { useState, useEffect } = React
-
 export function BugFilter({ filterBy, onSetFilterBy, sortBy, onSetSortBy }) {
+    const { useState, useEffect } = React
 
     const [filterByToEdit, setFilterByToEdit] = useState(filterBy)
     const [isExpanded, setIsExpanded] = useState(false)

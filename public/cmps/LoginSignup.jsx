@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-
 export function LoginSignup({ onLogin, onSignup }) {
+    const { useState } = React
     const [credentials, setCredentials] = useState({ username: '', password: '' });
     const [isSignup, setIsSignup] = useState(false);
 

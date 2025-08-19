@@ -1,10 +1,11 @@
-const { useState, useEffect } = React
-
 import { bugService } from '../services/bug.service.js'
+import { userService } from '../services/user.service.js'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 
 import { BugFilter } from '../cmps/BugFilter.jsx'
 import { BugList } from '../cmps/BugList.jsx'
+
+const { useState, useEffect } = React
 
 export function BugIndex() {
     console.log('BugIndex component mounted') // Debug log
@@ -141,7 +142,9 @@ export function BugIndex() {
         <header>
             <h3>Bug List {paginationInfo && `(${paginationInfo.totalCount} bugs)`}</h3>
             <div className="header-buttons">
-                <button onClick={onAddBug}>Add Bug</button>
+                {userService.getLoggedinUser() && (
+                    <button onClick={onAddBug}>Add Bug</button>
+                )}
                 <button onClick={downloadPDF} className="download-btn">Download Report</button>
             </div>
         </header>
