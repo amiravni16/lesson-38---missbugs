@@ -6,7 +6,8 @@
     "password": "puki123",
     "email": "puki@example.com",
     "imgUrl": "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5362003_1280.png",
-    "createdAt": 1542107359454
+    "createdAt": 1542107359454,
+    "isAdmin": false
   },
   {
     "_id": "u102",
@@ -15,7 +16,8 @@
     "password": "muki123",
     "email": "muki@example.com",
     "imgUrl": "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5362003_1280.png",
-    "createdAt": 1542107359455
+    "createdAt": 1542107359455,
+    "isAdmin": false
   },
   {
     "_id": "u103",
@@ -24,7 +26,8 @@
     "password": "suki123",
     "email": "suki@example.com",
     "imgUrl": "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5362003_1280.png",
-    "createdAt": 1542107359456
+    "createdAt": 1542107359456,
+    "isAdmin": false
   },
   {
     "_id": "u104",
@@ -33,7 +36,8 @@
     "password": "tuki123",
     "email": "tuki@example.com",
     "imgUrl": "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5362003_1280.png",
-    "createdAt": 1542107359457
+    "createdAt": 1542107359457,
+    "isAdmin": false
   },
   {
     "_id": "c7YmQ",
