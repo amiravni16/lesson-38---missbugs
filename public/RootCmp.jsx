@@ -8,7 +8,7 @@ import { Home } from './pages/Home.jsx'
 import { BugIndex } from './pages/BugIndex.jsx'
 import { BugDetails } from './pages/BugDetails.jsx'
 import { AboutUs } from './pages/AboutUs.jsx'
-import { Link } from 'react-router-dom';
+import { UserDetails } from './pages/UserDetails.jsx'
 
 export function App() {
     return <Router>
