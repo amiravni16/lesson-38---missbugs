@@ -1,10 +1,11 @@
 import { BugPreview } from './BugPreview.jsx'
 import { userService } from '../services/user.service.js'
 
+const { useState } = React
 const { Link } = ReactRouterDOM
 
 export function BugList({ bugs, onRemoveBug, onEditBug }) {
-    const loggedinUser = userService.getLoggedinUser()
+    const [loggedinUser, setLoggedinUser] = useState(userService.getLoggedinUser())
 
     if (!bugs) return <div>Loading...</div>
     return <ul className="bug-list">

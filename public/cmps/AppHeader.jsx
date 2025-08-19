@@ -1,9 +1,10 @@
 import { userService } from '../services/user.service.js'
 
+const { useState } = React
 const { NavLink } = ReactRouterDOM
 
 export function AppHeader() {
-    const loggedinUser = userService.getLoggedinUser()
+    const [loggedinUser, setLoggedinUser] = useState(userService.getLoggedinUser())
     
     return <header className="app-header main-content single-row">
         <h1>Miss Bug</h1>

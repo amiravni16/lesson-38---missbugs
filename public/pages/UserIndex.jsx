@@ -5,9 +5,9 @@ const { useState, useEffect } = React;
 export function UserIndex() {
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const loggedinUser = userService.getLoggedinUser();
+    const [loggedinUser, setLoggedinUser] = useState(userService.getLoggedinUser());
 
-    useEffect(() => {
+    useEffect(function() {
         if (loggedinUser && loggedinUser.isAdmin) {
             loadUsers();
         }

@@ -8,7 +8,7 @@ import { BugList } from '../cmps/BugList.jsx'
 const { useState, useEffect } = React
 
 export function BugIndex() {
-    console.log('BugIndex component mounted') // Debug log
+
     
     const [bugs, setBugs] = useState(null)
     const [filterBy, setFilterBy] = useState(bugService.getDefaultFilter())
@@ -16,29 +16,26 @@ export function BugIndex() {
     const [page, setPage] = useState({ idx: 0, size: 3 })
     const [paginationInfo, setPaginationInfo] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
+    const [loggedinUser, setLoggedinUser] = useState(userService.getLoggedinUser())
 
-    useEffect(() => {
-        console.log('useEffect triggered with:', { filterBy, sortBy, page }) // Debug log
+    useEffect(function() {
         setIsLoading(true)
         loadBugs()
     }, [filterBy.txt, filterBy.minSeverity, filterBy.maxSeverity, filterBy.labels, filterBy.dateFrom, filterBy.dateTo, filterBy.hasLabels, sortBy.field, sortBy.direction, page.idx, page.size])
 
     function loadBugs() {
-        console.log('Loading bugs with:', { filterBy, sortBy, page }) // Debug log
         bugService.query(filterBy, sortBy, page)
-            .then(result => {
-                console.log('Bugs loaded successfully:', result) // Debug log
+            .then(function(result) {
                 setBugs(result.bugs)
                 setPaginationInfo({
                     totalCount: result.totalCount,
                     pageSize: result.pageSize,
                     pageIdx: result.pageIdx,
-                    totalPages: result.totalPages
+                    totalPages: result.totalCount
                 })
                 setIsLoading(false)
             })
-            .catch(err => {
-                console.error('Error loading bugs:', err) // Debug log
+            .catch(function(err) {
                 showErrorMsg(`Couldn't load bugs - ${err}`)
                 setIsLoading(false)
             })
@@ -81,19 +78,19 @@ export function BugIndex() {
             .catch(err => showErrorMsg('Cannot update bug', err))
     }
 
-    function onSetFilterBy(filterBy) {
+    const onSetFilterBy = React.useCallback(function(filterBy) {
         setFilterBy(prevFilter => ({ ...prevFilter, ...filterBy }))
         setPage({ idx: 0, size: 3 }) // Reset to first page when filtering
-    }
+    }, [])
 
-    function onSetSortBy(sortConfig) {
+    const onSetSortBy = React.useCallback(function(sortConfig) {
         setSortBy(sortConfig)
         setPage({ idx: 0, size: 3 }) // Reset to first page when sorting
-    }
+    }, [])
 
-    function onSetPage(pageIdx) {
+    const onSetPage = React.useCallback(function(pageIdx) {
         setPage(prevPage => ({ ...prevPage, idx: pageIdx }))
-    }
+    }, [])
 
     function downloadPDF() {
         if (!bugs || bugs.length === 0) {
@@ -128,7 +125,7 @@ export function BugIndex() {
         showSuccessMsg('Bug report downloaded!')
     }
 
-    console.log('BugIndex render - bugs:', bugs, 'paginationInfo:', paginationInfo) // Debug log
+
     
     return <section className="bug-index main-content">
         
@@ -142,7 +139,7 @@ export function BugIndex() {
         <header>
             <h3>Bug List {paginationInfo && `(${paginationInfo.totalCount} bugs)`}</h3>
             <div className="header-buttons">
-                {userService.getLoggedinUser() && (
+                {loggedinUser && (
                     <button onClick={onAddBug}>Add Bug</button>
                 )}
                 <button onClick={downloadPDF} className="download-btn">Download Report</button>

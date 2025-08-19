@@ -4,7 +4,7 @@ export function BugFilter({ filterBy, onSetFilterBy, sortBy, onSetSortBy }) {
     const [filterByToEdit, setFilterByToEdit] = useState(filterBy)
     const [isExpanded, setIsExpanded] = useState(false)
 
-    useEffect(() => {
+    useEffect(function() {
         onSetFilterBy(filterByToEdit)
     }, [filterByToEdit])
 
