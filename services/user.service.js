@@ -7,7 +7,8 @@ export {
     query,
     remove,
     getById,
-    getByUsername
+    getByUsername,
+    save
 }
 
 const users = utilService.readJsonFile('data/user.json')
@@ -80,6 +81,23 @@ function remove(userId) {
     
     users.splice(idx, 1)
     return _saveUsersToFile()
+}
+
+function save(user) {
+    if (user._id) {
+        // Update existing user
+        const idx = users.findIndex(currUser => currUser._id === user._id)
+        if (idx === -1) return Promise.reject('User not found!')
+        
+        users[idx] = { ...users[idx], ...user }
+    } else {
+        // Create new user
+        user._id = utilService.makeId()
+        user.createdAt = Date.now()
+        users.push(user)
+    }
+    
+    return _saveUsersToFile().then(() => user)
 }
 
 

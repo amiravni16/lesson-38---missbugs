@@ -3,7 +3,7 @@ import { storageService } from './async-storage.service.js'
 
 const STORAGE_KEY = 'bugs'
 
-const BASE_URL = 'http://localhost:3030/api/bug'
+const BASE_URL = 'http://127.0.0.1:3030/api/bug'
 
 export const bugService = {
     query,
@@ -79,7 +79,8 @@ function getById(bugId) {
 
 function remove(bugId) {
     return fetch(`${BASE_URL}/${bugId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        credentials: 'include' // Include cookies for authentication
     }).then(res => {
         if (!res.ok) throw new Error('Failed to remove bug')
         return res.text()
@@ -95,6 +96,7 @@ function save(bug) {
         headers: {
             'Content-Type': 'application/json'
         },
+        credentials: 'include', // Include cookies for authentication
         body: JSON.stringify(bug)
     }).then(res => {
         if (!res.ok) throw new Error('Failed to save bug')

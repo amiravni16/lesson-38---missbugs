@@ -2,7 +2,7 @@ import express from 'express'
 import cookieParser from 'cookie-parser'
 
 import { bugService } from './services/bug.service.js'
-import * as userService from './services/user.service.js'
+import { signup, query, remove, getById, getByUsername, save } from './services/user.service.js'
 import { loggerService } from './services/logger.service.js'
 import { authService } from './services/auth.service.js'
 
@@ -171,7 +171,7 @@ app.post('/api/auth/signup', (req, res) => {
     const credentials = req.body
     console.log('🚀 ~ req.body:', req.body)
 
-    userService.signup(credentials)
+    signup(credentials)
         .then(user => {
             const loginToken = authService.getLoginToken(user)
             res.cookie('loginToken', loginToken)
@@ -217,7 +217,7 @@ app.get('/api/user', (req, res) => {
     if (username) filterBy.username = username
     if (email) filterBy.email = email
     
-    userService.query(filterBy).then(users => {
+    query(filterBy).then(users => {
         res.send(users)
     }).catch((err) => {
         loggerService.error('Cannot get users', err)
@@ -229,7 +229,7 @@ app.get('/api/user', (req, res) => {
 app.get('/api/user/:userId', (req, res) => {
     const { userId } = req.params
     
-    userService.getById(userId).then(user => {
+    getById(userId).then(user => {
         res.send(user)
     }).catch(err => {
         loggerService.error('Cannot get user', err)
@@ -241,7 +241,7 @@ app.get('/api/user/:userId', (req, res) => {
 app.post('/api/user', (req, res) => {
     const user = req.body
     
-    userService.save(user).then((savedUser) => {
+    save(user).then((savedUser) => {
         res.status(201).send(savedUser)
     }).catch((err) => {
         loggerService.error('Cannot save user', err)
@@ -254,7 +254,7 @@ app.put('/api/user/:userId', (req, res) => {
     const { userId } = req.params
     const user = { ...req.body, _id: userId }
     
-    userService.save(user).then((savedUser) => {
+    save(user).then((savedUser) => {
         res.send(savedUser)
     }).catch((err) => {
         loggerService.error('Cannot update user', err)
@@ -266,7 +266,7 @@ app.put('/api/user/:userId', (req, res) => {
 app.delete('/api/user/:userId', (req, res) => {
     const { userId } = req.params
 
-    userService.remove(userId).then(() => {
+    remove(userId).then(() => {
         loggerService.info(`User ${userId} removed`)
         res.status(204).send()
     }).catch(err => {
