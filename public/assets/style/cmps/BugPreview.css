@@ -17,6 +17,19 @@
     color: var(--gray1);
 }
 
+.bug-preview .creator {
+    color: var(--gray2);
+    margin-bottom: 0.5em;
+    font-size: 0.85em;
+    font-style: italic;
+}
+
+.bug-preview .creator-name {
+    color: var(--clr1);
+    font-weight: 500;
+    font-style: normal;
+}
+
 .bug-preview .description {
     color: var(--gray3);
     margin-bottom: 0.8em;

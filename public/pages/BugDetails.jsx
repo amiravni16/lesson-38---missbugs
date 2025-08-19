@@ -22,6 +22,9 @@ export function BugDetails() {
             bug && 
             <div>
                 <h4>{bug.title}</h4>
+                {bug.creator && (
+                    <h5>Created by: <span className="creator-name">{bug.creator.fullname}</span></h5>
+                )}
                 <h5>Severity: <span>{bug.severity}</span></h5>
                 <p><strong>Description:</strong></p>
                 <p>{bug.description}</p>
