@@ -1,4 +1,3 @@
-import React from 'react';
 import { BugList } from '../cmps/BugList.jsx';
 import { userService } from '../services/user.service.js';
 
