@@ -48,5 +48,14 @@
     "username": "testuser",
     "password": "testpass",
     "isAdmin": false
+  },
+  {
+    "_id": "admin001",
+    "fullname": "Admin User",
+    "username": "admin",
+    "password": "admin",
+    "email": "admin@missbug.com",
+    "isAdmin": true,
+    "createdAt": 1542107359458
   }
 ]
