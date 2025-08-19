@@ -18,7 +18,7 @@
 }
 
 .bug-preview .creator {
-    color: var(--gray2);
+    color: var(--gray1);
     margin-bottom: 0.5em;
     font-size: 0.85em;
     font-style: italic;
