@@ -114,7 +114,7 @@ function remove(bugId, loggedinUser) {
 }
 
 function save(bug, loggedinUser) {
-    console.log('bug: ', bug)
+    
     if (bug._id) {
         // Update existing bug - check ownership
         const existingBug = bugs.find(currBug => currBug._id === bug._id)
@@ -150,7 +150,7 @@ function _saveBugsToFile() {
                 loggerService.error('Cannot write to bugs file', err)
                 return reject(err);
             }
-            console.log('The file was saved!');
+    
             resolve()
         });
     })

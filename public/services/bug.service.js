@@ -40,8 +40,7 @@ function query(filterBy = {}, sortBy = {}, page = {}) {
     const hasParams = queryParams.toString().length > 0
     const url = hasParams ? `${BASE_URL}?${queryParams.toString()}` : BASE_URL
     
-    console.log('Fetching bugs from:', url) // Debug log
-    console.log('Request details:', { filterBy, sortBy, page }) // Debug log
+
     
     return fetch(url, {
         method: 'GET',
@@ -50,21 +49,16 @@ function query(filterBy = {}, sortBy = {}, page = {}) {
             'Content-Type': 'application/json'
         }
     })
-        .then(res => {
-            console.log('Response status:', res.status) // Debug log
-            console.log('Response headers:', res.headers) // Debug log
+        .then(function(res) {
             if (!res.ok) {
-                console.error('Response not ok:', res.status, res.statusText) // Debug log
                 throw new Error(`HTTP ${res.status}: ${res.statusText}`)
             }
             return res.json()
         })
-        .then(data => {
-            console.log('Response data:', data) // Debug log
+        .then(function(data) {
             return data
         })
-        .catch(err => {
-            console.error('Error fetching bugs:', err) // Debug log
+        .catch(function(err) {
             throw err
         })
 }
