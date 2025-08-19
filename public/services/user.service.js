@@ -7,7 +7,7 @@ export const userService = {
     remove
 };
 
-const BASE_URL = 'http://127.0.0.1:3030/api/auth'
+const BASE_URL = '/api/auth'
 
 function login(credentials) {
     return fetch(`${BASE_URL}/login`, {
@@ -72,8 +72,8 @@ function query(filterBy = {}) {
     if (filterBy.email) queryParams.append('email', filterBy.email)
     
     const url = queryParams.toString().length > 0 ? 
-        `http://127.0.0.1:3030/api/user?${queryParams.toString()}` : 
-        'http://127.0.0.1:3030/api/user'
+        `/api/user?${queryParams.toString()}` : 
+        '/api/user'
     
     return fetch(url, {
         method: 'GET',
@@ -85,7 +85,7 @@ function query(filterBy = {}) {
 }
 
 function remove(userId) {
-    return fetch(`http://127.0.0.1:3030/api/user/${userId}`, {
+    return fetch(`/api/user/${userId}`, {
         method: 'DELETE',
         credentials: 'include'
     }).then(res => {

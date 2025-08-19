@@ -3,7 +3,7 @@ import { storageService } from './async-storage.service.js'
 
 const STORAGE_KEY = 'bugs'
 
-const BASE_URL = 'http://127.0.0.1:3030/api/bug'
+const BASE_URL = '/api/bug'
 
 export const bugService = {
     query,
