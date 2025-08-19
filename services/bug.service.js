@@ -103,9 +103,9 @@ function remove(bugId, loggedinUser) {
     const bug = bugs.find(bug => bug._id === bugId)
     if (!bug) return Promise.reject('Bug not found!')
     
-    // Check ownership
-    if (bug.creator && bug.creator._id !== loggedinUser._id) {
-        return Promise.reject('Only the bug creator can remove this bug')
+    // Check ownership - admin can delete any bug
+    if (!loggedinUser.isAdmin && bug.creator && bug.creator._id !== loggedinUser._id) {
+        return Promise.reject('Only the bug creator or admin can remove this bug')
     }
     
     const idx = bugs.findIndex(bug => bug._id === bugId)
@@ -120,8 +120,8 @@ function save(bug, loggedinUser) {
         const existingBug = bugs.find(currBug => currBug._id === bug._id)
         if (!existingBug) return Promise.reject('Bug not found!')
         
-        if (existingBug.creator && existingBug.creator._id !== loggedinUser._id) {
-            return Promise.reject('Only the bug creator can update this bug')
+        if (!loggedinUser.isAdmin && existingBug.creator && existingBug.creator._id !== loggedinUser._id) {
+            return Promise.reject('Only the bug creator or admin can update this bug')
         }
         
         const idx = bugs.findIndex(currBug => currBug._id === bug._id)
