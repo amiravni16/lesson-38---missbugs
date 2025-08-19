@@ -52,6 +52,11 @@ function logout() {
         method: 'POST'
     }).then(() => {
         sessionStorage.removeItem('loggedinUser')
+        
+        // Emit user logout event
+        if (window.eventBusService) {
+            window.eventBusService.emit('user-logout')
+        }
     })
 }
 
