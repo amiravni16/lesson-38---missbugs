@@ -1,4 +1,5 @@
 export function BugPreview({bug}) {
+    console.log('BugPreview render - bug:', bug, 'creator:', bug.creator)
     return <article className="bug-preview">
         <p className="title">{bug.title}</p>
         {bug.creator && (
